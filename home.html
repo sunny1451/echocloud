@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            color: #111827;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .navbar .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .navbar a {
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .navbar a:hover {
+            color: #3b82f6;
+        }
+
+        .signup-btn {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #dbeafe, #f3e8ff);
+            padding: 2rem 1rem;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-section p {
+            color: #4b5563;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .features-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .features-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .how-it-works-step {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem; /* Reduced padding for mobile */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer {
+            background: #111827;
+            color: #d1d5db;
+            padding: 1.5rem 1rem;
+        }
+
+        .footer a {
+            color: #d1d5db;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: #3b82f6;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 640px) {
+            .navbar {
+                padding: 0.5rem;
+            }
+
+            .navbar .logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar .flex {
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+
+            .hero-section {
+                padding: 1.5rem 0.5rem;
+                min-height: auto;
+            }
+
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-section p {
+                font-size: 0.9rem;
+            }
+
+            .hero-section img {
+                max-width: 70%;
+                margin: 1rem auto 0;
+            }
+
+            .features-card, .how-it-works-step, .testimonial-card {
+                padding: 0.75rem;
+            }
+
+            .features-section, .how-it-works-section, .testimonials-section {
+                padding: 1rem 0.5rem;
+            }
+
+            .max-w-7xl {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section img {
+                max-width: 80%;
+            }
+
+            .features-card, .how-it-works-step, .testimonial-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Desktop and Laptop */
+        @media (min-width: 1025px) {
+            .hero-section {
+                padding: 3rem 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .features-card, .how-it-works-step, .testimonial-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="logo">🗂️ Echo Portfolio</a>
+            <div class="flex space-x-4 items-center">
+                <a href="/login" class="text-base">Login</a>
+                <a href="/signup" class="signup-btn">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
+        <div class="md:w-1/2 px-4">
+            <h1 class="mb-3">Create Your Portfolio in Minutes</h1>
+            <p class="mb-4">Just enter your details, pick a design, and share your personal portfolio with the world instantly.</p>
+            <a href="/signup" class="cta-btn inline-block">Get Started</a>
+        </div>
+        <div class="md:w-1/2 px-4">
+            <img src="https://via.placeholder.com/500x400?text=Portfolio+Illustration" alt="Portfolio Illustration" class="w-full" loading="lazy">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-8 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-6">Why Choose Echo Portfolio?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="features-card">
+                    <h3 class="text-lg font-semibold mb-1">Fast Setup</h3>
+                    <p class="text-gray-600 text-sm">No coding required, just fill in your details and you're ready to go.</p>
+                </div>
+                <div class="features-card">
+                    <h3 class="text-lg font-semibold mb-1">Beautiful Templates</h3>
+                    <p class="text-gray-600 text-sm">Choose from a variety of stunning designs to showcase your work.</p>
+                </div>
+                <div class="features-card">
+                    <h3 class="text-lg font-semibold mb-1">Free Hosting</h3>
+                    <p class="text-gray-600 text-sm">Share your portfolio instantly with anyone, anywhere.</p>
+                </div>
+                <div class="features-card">
+                    <h3 class="text-lg font-semibold mb-1">Custom Domain</h3>
+                    <p class="text-gray-600 text-sm">Host your portfolio on your own branded domain.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section py-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-6">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="how-it-works-step text-center">
+                    <div class="text-3xl mb-3">📝</div>
+                    <h3 class="text-lg font-semibold mb-1">Sign Up</h3>
+                    <p class="text-gray-600 text-sm">Create an account in seconds.</p>
+                </div>
+                <div class="how-it-works-step text-center">
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="text-lg font-semibold mb-1">Enter Details + Pick Design</h3>
+                    <p class="text-gray-600 text-sm">Add your info and choose a template.</p>
+                </div>
+                <div class="how-it-works-step text-center">
+                    <div class="text-3xl mb-3">🚀</div>
+                    <h3 class="text-lg font-semibold mb-1">Publish & Share</h3>
+                    <p class="text-gray-600 text-sm">Launch your portfolio and share it with the world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section py-8 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-6">What Our Users Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="testimonial-card">
+                    <p class="text-gray-600 text-sm mb-3">"Echo Portfolio made showcasing my work so easy!"</p>
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/40" alt="User 1" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <p class="font-semibold text-sm">Jane Doe</p>
+                            <p class="text-xs text-gray-500">Graphic Designer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="text-gray-600 text-sm mb-3">"I had my portfolio live in under 10 minutes!"</p>
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/40" alt="User 2" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <p class="font-semibold text-sm">John Smith</p>
+                            <p class="text-xs text-gray-500">Web Developer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="text-gray-600 text-sm mb-3">"The templates are stunning and professional."</p>
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/40" alt="User 3" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <p class="font-semibold text-sm">Emily Chen</p>
+                            <p class="text-xs text-gray-500">Photographer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-3 md:mb-0">
+                    <p class="text-sm">© 2025 Echo Portfolio. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Basic routing simulation
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                console.log(`Navigating to ${href}`);
+                if (href === '/signup') {
+                    window.location.href = 'https://localworkers.xyz/';
+                } else if (href === '/login') {
+                    window.location.href = 'https://localworkers.xyz/login';
+                } else {
+                    window.location.href = href;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Shoping Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe6e6, #fff0f0);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .character {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            z-index: 0;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            color: #f28c38;
+            font-size: 1em;
+            margin-bottom: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .login-container h2 {
+            margin: 0 0 20px;
+            font-size: 1.8em;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #f28c38;
+            box-shadow: 0 0 0 3px rgba(242, 140, 56, 0.2);
+        }
+
+        .btn-gradient {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #f28c38, #f5a623);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(242, 140, 56, 0.4);
+        }
+
+        .btn-gradient:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .error { color: #f87171; }
+        .success { color: #86efac; }
+        .link { color: #67e8f9; text-decoration: none; }
+        .link:hover { color: #cffafe; }
+
+        .coin {
+            position: absolute;
+            background-color: #d4ed7a;
+            border-radius: 50%;
+            animation: fall 4s infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .character {
+                max-width: 400px;
+                margin-bottom: 0;
+                margin-left: 20px;
+            }
+
+            .login-container {
+                margin-right: 20px;
+            }
+
+            .login-container h2 {
+                font-size: 2em;
+            }
+
+            .form-group input {
+                font-size: 1em;
+            }
+
+            .btn-gradient {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://github.com/sunny1451/video/blob/main/89e31fb982e6d87f239196db2b3e9ccc%20copy%201.png?raw=true" alt="Character" class="character" loading="lazy">
+        <div class="login-container">
+            <div class="logo">🛍️ Sweet Shoping</div>
+            <h2>Login</h2>
+            <div class="space-y-4">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter Email" required aria-label="Email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" required aria-label="Password">
+                </div>
+                <button class="btn-gradient" onclick="login()" aria-label="Sign In">Sign In</button>
+                <p id="error" class="message error" role="alert"></p>
+                <p id="success" class="message success" role="alert"></p>
+                <a href="http://sweatshoping.shop/regisert.html" class="link" aria-label="Create Your Account">Create Your Account</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getFirestore, doc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFoIoUsTJ_4NzkV-sdNffAOjbHRxSRIp8",
+            authDomain: "echo-625fa.firebaseapp.com",
+            projectId: "echo-625fa",
+            storageBucket: "echo-625fa.firebasestorage.app",
+            messagingSenderId: "890702112097",
+            appId: "1:890702112097:web:e81927ba359a8c426c1120",
+            measurementId: "G-DMBW4N7J2T"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+
+        // Check for file:// protocol
+        if (window.location.protocol === "file:") {
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = 'This app requires a server for Firebase Authentication. Please host it using a local server or Firebase Hosting.';
+            errorElement.classList.add('show');
+            document.querySelector('.btn-gradient').disabled = true;
+        } else {
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    window.location.href = 'http://sweatshoping.shop/home.html';
+                }
+            });
+        }
+
+        // Update lastLogin in Firestore
+        async function updateLastLogin(userId) {
+            try {
+                await updateDoc(doc(db, "users", userId), {
+                    lastLogin: serverTimestamp()
+                });
+                console.log("Updated lastLogin for user:", userId);
+            } catch (error) {
+                console.error("Error updating lastLogin:", error);
+            }
+        }
+
+        // Login Function
+        window.login = async function() {
+            if (window.location.protocol === "file:") return;
+
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorElement = document.getElementById('error');
+            const successElement = document.getElementById('success');
+            const loginBtn = document.querySelector('.btn-gradient');
+
+            if (!emailInput || !passwordInput || !errorElement || !successElement) {
+                console.error('One or more DOM elements not found.');
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Reset messages
+            errorElement.classList.remove('show');
+            successElement.classList.remove('show');
+
+            // Validate inputs
+            if (!email) {
+                errorElement.textContent = 'Email cannot be empty.';
+                errorElement.classList.add('show');
+                return;
+            }
+            if (!password) {
+                errorElement.textContent = 'Password cannot be empty.';
+                errorElement.classList.add('show');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.style.opacity = '0.7';
+
+            try {
+                // Sign in
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Update lastLogin
+                await updateLastLogin(user.uid);
+
+                // Clear form
+                emailInput.value = '';
+                passwordInput.value = '';
+
+                // Show success
+                successElement.textContent = 'Login successful! Redirecting...';
+                successElement.classList.add('show');
+
+                // Redirect after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'http://sweatshoping.shop/home.html';
+                }, 1500);
+            } catch (error) {
+                console.error("Login error:", error.code, error.message);
+                let errorMessage = 'Invalid Email or Password.';
+                switch (error.code) {
+                    case 'auth/invalid-credential':
+                        errorMessage = 'Incorrect Email or Password.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many attempts. Please try again later.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorElement.textContent = 'This account has been disabled.';
+                        errorElement.classList.add('show');
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection or host on a server.';
+                        break;
+                    default:
+                        errorMessage = `Login failed: ${error.message}`;
+                }
+                if (error.code !== 'auth/user-disabled') {
+                    errorElement.textContent = errorMessage;
+                    errorElement.classList.add('show');
+                }
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.style.opacity = '1';
+            }
+        };
+
+        // Coin animation
+        function createCoins() {
+            for (let i = 0; i < 10; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                coin.style.left = Math.random() * 100 + '%';
+                coin.style.width = Math.random() * 15 + 10 + 'px';
+                coin.style.height = coin.style.width;
+                coin.style.animationDelay = Math.random() * 4 + 's';
+                document.body.appendChild(coin);
+            }
+        }
+        createCoins();
+    </script>
+</body>
+</html>
