@@ -412,6 +412,23 @@
             const handleFromUrl = urlParams.get('user') || '';
             const imgBBApiKey = '01400454f4aafb70d1c9beddec5cbbc5'; // Replace with valid ImgBB API key
 
+            // Ensure anonymous sign-in on page load
+            async function ensureAuthenticated() {
+                if (!window.auth.currentUser) {
+                    try {
+                        await signInAnonymously(window.auth);
+                        console.log('Anonymous sign-in successful');
+                    } catch (error) {
+                        console.error('Anonymous sign-in failed:', error);
+                        editFormStatus.textContent = 'Authentication failed: ' + error.message;
+                        editFormStatus.style.color = 'red';
+                    }
+                }
+            }
+
+            // Initialize authentication
+            await ensureAuthenticated();
+
             // Theme Toggle
             themeToggle.addEventListener('click', () => {
                 const body = document.body;
@@ -435,6 +452,7 @@
 
             // Check if user is owner
             window.auth.onAuthStateChanged(async user => {
+                console.log('Auth state changed:', user ? 'User logged in' : 'No user');
                 if (user && handleFromUrl) {
                     const docRef = window.firestore.doc(window.db, 'portfolios', handleFromUrl);
                     const docSnap = await window.firestore.getDoc(docRef);
@@ -443,21 +461,22 @@
                         currentUserName = handleFromUrl;
                         isPublished = docSnap.data().status === 'published';
                     }
+                    console.log('isOwner:', isOwner, 'isPublished:', isPublished);
                     toggleControls();
                     await loadPortfolioData();
                 } else if (user) {
                     isOwner = true; // New portfolio
+                    console.log('New portfolio, isOwner:', isOwner);
                     toggleControls();
                     await loadPortfolioData();
                 } else {
-                    await signInAnonymously(window.auth).catch(error => {
-                        console.error('Anonymous sign-in failed:', error);
-                    });
+                    await ensureAuthenticated();
                 }
             });
 
             // Toggle controls based on mode
             function toggleControls() {
+                console.log('Toggling controls: isPublished=', isPublished, 'isOwner=', isOwner, 'handleFromUrl=', handleFromUrl);
                 controlButtons.classList.add('hidden');
                 if (isPublished && handleFromUrl) {
                     if (isOwner) {
@@ -465,12 +484,18 @@
                         editButton.classList.add('hidden');
                         publishButton.classList.add('hidden');
                         unpublishButton.classList.remove('hidden');
+                        console.log('Showing unpublish button for owner');
+                    } else {
+                        console.log('Hiding all buttons for non-owner in published mode');
                     }
                 } else if (isOwner) {
                     controlButtons.classList.remove('hidden');
                     editButton.classList.remove('hidden');
                     publishButton.classList.remove('hidden');
                     unpublishButton.classList.add('hidden');
+                    console.log('Showing edit and publish buttons for owner in draft mode');
+                } else {
+                    console.log('Hiding all buttons for non-authenticated user');
                 }
             }
 
@@ -532,10 +557,11 @@
             });
 
             // Publish Button Logic
-            publishButton.addEventListener('click', () => {
+            publishButton.addEventListener('click', async () => {
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to publish your portfolio.';
                     editFormStatus.style.color = 'red';
+                    await ensureAuthenticated();
                     return;
                 }
                 if (!currentUserName) {
@@ -556,6 +582,12 @@
             });
 
             confirmPublish.addEventListener('click', async () => {
+                if (!window.auth.currentUser) {
+                    editFormStatus.textContent = 'Please log in to publish your portfolio.';
+                    editFormStatus.style.color = 'red';
+                    await ensureAuthenticated();
+                    return;
+                }
                 try {
                     const docRef = window.firestore.doc(window.db, 'portfolios', currentUserName);
                     await window.firestore.updateDoc(docRef, {
@@ -591,11 +623,14 @@
             // Unpublish Button Logic
             unpublishButton.addEventListener('click', async () => {
                 if (!window.auth.currentUser) {
-                    alert('Please log in to unpublish your portfolio.');
+                    editFormStatus.textContent = 'Please log in to unpublish your portfolio.';
+                    editFormStatus.style.color = 'red';
+                    await ensureAuthenticated();
                     return;
                 }
                 if (!isOwner) {
-                    alert('Only the portfolio owner can unpublish.');
+                    editFormStatus.textContent = 'Only the portfolio owner can unpublish.';
+                    editFormStatus.style.color = 'red';
                     return;
                 }
                 if (confirm('Are you sure you want to unpublish? You can edit again after unpublishing.')) {
@@ -609,7 +644,8 @@
                         alert('Portfolio unpublished. You can now edit it again.');
                         await loadPortfolioData();
                     } catch (error) {
-                        alert('Error unpublishing portfolio: ' + error.message);
+                        editFormStatus.textContent = 'Error unpublishing portfolio: ' + error.message;
+                        editFormStatus.style.color = 'red';
                     }
                 }
             });
@@ -672,6 +708,16 @@
                         editFormStatus.textContent = 'Please enter your name to save.';
                         editFormStatus.style.color = 'red';
                         return;
+                    }
+                    if (!window.auth.currentUser) {
+                        editFormStatus.textContent = 'Not authenticated. Attempting to sign in...';
+                        editFormStatus.style.color = 'red';
+                        await ensureAuthenticated();
+                        if (!window.auth.currentUser) {
+                            editFormStatus.textContent = 'Authentication failed. Please try again.';
+                            editFormStatus.style.color = 'red';
+                            return;
+                        }
                     }
                     const docRef = window.firestore.doc(window.db, 'portfolios', data.name);
                     const cleanedData = cleanObject(data);
@@ -781,6 +827,7 @@
                     currentUserName = data.name || handleFromUrl;
                     projectCount = data.projects.length || 1;
                     skillCount = data.skills.length || 1;
+                    console.log('Loaded data:', data);
                     toggleControls();
                     updatePageContent(data);
                 } catch (error) {
