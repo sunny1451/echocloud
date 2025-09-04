@@ -277,7 +277,7 @@
                 <h3>Cool Green-Blue</h3>
                 <p>Modern & Minimalist</p>
             </a>
-            <a href="https://sweatshoping.shop/templates/goldenOrange.html" class="template-card" data-theme="GoldenOrange">
+            <a href="https://sweatshoping.shop/templates/goldernOrange.html" class="template-card" data-theme="GoldenOrange">
                 <div class="template-preview" style="background: linear-gradient(135deg, #ffbf00, #ffa500);"></div>
                 <h3>Golden Orange</h3>
                 <p>Luxury & Refined</p>
@@ -330,6 +330,44 @@
                 continueButton.disabled = false;
                 showMessage('Theme selected!', 'success');
             });
+        });
+
+        // Handle continue button click
+        continueButton.addEventListener('click', () => {
+            if (selectedTheme) {
+                let themeFile;
+                // Map data-theme to file names
+                switch (selectedTheme) {
+                    case 'CoolGreenBlue':
+                        themeFile = 'coolGreenBlue.html';
+                        break;
+                    case 'GoldenOrange':
+                        themeFile = 'goldernOrange.html';
+                        break;
+                    case 'HotPink':
+                        themeFile = 'hotpink.html';
+                        break;
+                    case 'FieryOrange':
+                        themeFile = 'flaryOrange.html';
+                        break;
+                    case 'BrownChocolate':
+                        themeFile = 'brownchock.html';
+                        break;
+                    case 'CrimsonRed':
+                        themeFile = 'crimson.html';
+                        break;
+                    default:
+                        themeFile = '';
+                }
+                if (themeFile) {
+                    showMessage('Redirecting to your portfolio...', 'info');
+                    setTimeout(() => {
+                        window.location.href = `https://sweatshoping.shop/templates/${themeFile}`;
+                    }, 1000);
+                } else {
+                    showMessage('Error: Theme not found!', 'error');
+                }
+            }
         });
 
         // Handle back button click
