@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1: Choose Your Vibe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FF6F61;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #FF6F61;
+            transform: scale(1.05);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Template Selection */
+        .step-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .step-header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .step-header p {
+            font-size: 1em;
+            color: #666;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .template-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid #FF6F61;
+        }
+
+        .template-card.selected {
+            border: 2px solid #FF6F61;
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .template-preview {
+            height: 120px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .template-card h3 {
+            font-size: 16px;
+            margin: 0;
+            color: #333;
+        }
+
+        .template-card p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Sticky Footer */
+        .sticky-footer {
+            display: flex;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            z-index: 9;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #FF6F61;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: none;
+            text-align: center;
+        }
+
+        .message-box.info {
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+        .message-box.success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .message-box.error {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1400px;
+                padding: 40px;
+                gap: 50px;
+            }
+            .navbar {
+                padding: 20px 50px;
+            }
+            .logo {
+                font-size: 26px;
+            }
+            .templates-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px auto;
+                gap: 30px;
+            }
+            .navbar {
+                padding: 10px 20px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .templates-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            .template-card {
+                padding: 15px;
+            }
+            .template-preview {
+                height: 100px;
+            }
+            .template-card h3 {
+                font-size: 14px;
+            }
+            .sticky-footer {
+                padding: 15px;
+            }
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">Portfolio Forge</div>
+        <div class="nav-links">
+            <a href="#">Help</a>
+            <a href="#">Sign in</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="step-header">
+            <h1>Choose a Template Color Theme</h1>
+            <p>Each theme is a distinct design system—pick what matches your personality.</p>
+        </div>
+
+        <div class="templates-grid">
+            <div class="template-card" data-theme="Vibrant Red">
+                <div class="template-preview" style="background-color: #ef4444;"></div>
+                <h3>Vibrant Red</h3>
+                <p>Bold & Energetic</p>
+            </div>
+            <div class="template-card" data-theme="Cool Green-Blue">
+                <div class="template-preview" style="background-color: #20c997;"></div>
+                <h3>Cool Green-Blue</h3>
+                <p>Modern & Minimalist</p>
+            </div>
+            <div class="template-card" data-theme="Dark Coral">
+                <div class="template-preview" style="background-color: #f87171;"></div>
+                <h3>Dark Coral</h3>
+                <p>Elegant & Warm</p>
+            </div>
+            <div class="template-card" data-theme="Golden Orange">
+                <div class="template-preview" style="background-color: #ffbf00;"></div>
+                <h3>Golden Orange</h3>
+                <p>Luxury & Refined</p>
+            </div>
+            <div class="template-card" data-theme="Oceanic Blue">
+                <div class="template-preview" style="background-color: #1d4ed8;"></div>
+                <h3>Oceanic Blue</h3>
+                <p>Fresh & Fluid</p>
+            </div>
+            <div class="template-card" data-theme="Hot Pink">
+                <div class="template-preview" style="background-color: #ff69b4;"></div>
+                <h3>Hot Pink</h3>
+                <p>Fun & Cyberpunk</p>
+            </div>
+            <div class="template-card" data-theme="Lime Green">
+                <div class="template-preview" style="background-color: #a3e635;"></div>
+                <h3>Lime Green</h3>
+                <p>Futuristic & Clean</p>
+            </div>
+            <div class="template-card" data-theme="Peach Salmon">
+                <div class="template-preview" style="background-color: #fa8072;"></div>
+                <h3>Peach Salmon</h3>
+                <p>Soft & Friendly</p>
+            </div>
+            <div class="template-card" data-theme="Indigo Purple">
+                <div class="template-preview" style="background-color: #4f46e5;"></div>
+                <h3>Indigo Purple</h3>
+                <p>Mystical & Cosmic</p>
+            </div>
+            <div class="template-card" data-theme="Fiery Orange">
+                <div class="template-preview" style="background-color: #f97316;"></div>
+                <h3>Fiery Orange</h3>
+                <p>Bold & Aggressive</p>
+            </div>
+            <div class="template-card" data-theme="Teal Mint">
+                <div class="template-preview" style="background-color: #2dd4bf;"></div>
+                <h3>Teal Mint</h3>
+                <p>Fresh & Natural</p>
+            </div>
+            <div class="template-card" data-theme="Deep Red">
+                <div class="template-preview" style="background-color: #991b1b;"></div>
+                <h3>Deep Red</h3>
+                <p>Dramatic & Cinematic</p>
+            </div>
+            <div class="template-card" data-theme="Steel Blue">
+                <div class="template-preview" style="background-color: #4a6785;"></div>
+                <h3>Steel Blue</h3>
+                <p>Industrial & Sleek</p>
+            </div>
+            <div class="template-card" data-theme="Olive Green">
+                <div class="template-preview" style="background-color: #84a053;"></div>
+                <h3>Olive Green</h3>
+                <p>Earthy & Eco-friendly</p>
+            </div>
+            <div class="template-card" data-theme="Orchid Purple">
+                <div class="template-preview" style="background-color: #da70d6;"></div>
+                <h3>Orchid Purple</h3>
+                <p>Feminine & Elegant</p>
+            </div>
+            <div class="template-card" data-theme="Brown Chocolate">
+                <div class="template-preview" style="background-color: #7b3f00;"></div>
+                <h3>Brown Chocolate</h3>
+                <p>Cozy & Handcrafted</p>
+            </div>
+            <div class="template-card" data-theme="Slate Gray">
+                <div class="template-preview" style="background-color: #475569;"></div>
+                <h3>Slate Gray</h3>
+                <p>Professional & Modern</p>
+            </div>
+            <div class="template-card" data-theme="Khaki Lemon">
+                <div class="template-preview" style="background-color: #b7b045;"></div>
+                <h3>Khaki Lemon</h3>
+                <p>Playful & Quirky</p>
+            </div>
+            <div class="template-card" data-theme="Crimson Red">
+                <div class="template-preview" style="background-color: #dc2626;"></div>
+                <h3>Crimson Red</h3>
+                <p>Passionate & Luxury</p>
+            </div>
+            <div class="template-card" data-theme="Royal Blue">
+                <div class="template-preview" style="background-color: #4169e1;"></div>
+                <h3>Royal Blue</h3>
+                <p>Regal & Classy</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="sticky-footer">
+        <div class="footer-content">
+            <div class="buttons">
+                <button id="backButton" class="btn">Back</button>
+                <button id="continueButton" class="btn" disabled>Continue to Portfolio</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        const themeCards = document.querySelectorAll('.template-card');
+        const continueButton = document.getElementById('continueButton');
+        const backButton = document.getElementById('backButton');
+        const messageBox = document.getElementById('messageBox');
+        let selectedTheme = null;
+
+        // Handle theme card selection
+        themeCards.forEach(card => {
+            card.addEventListener('click', (event) => {
+                event.preventDefault();
+                themeCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedTheme = card.dataset.theme;
+                continueButton.disabled = false;
+                showMessage('Theme selected!', 'success');
+            });
+        });
+
+        // Handle continue button click
+        continueButton.addEventListener('click', () => {
+            if (selectedTheme) {
+                const themeSlug = selectedTheme.toLowerCase().replace(/\s+/g, '-');
+                showMessage('Redirecting to your portfolio...', 'info');
+                setTimeout(() => {
+                    window.location.href = `https://sweatshoping.shop/portfolio/${themeSlug}`;
+                }, 1000);
+            }
+        });
+
+        // Handle back button click
+        backButton.addEventListener('click', () => {
+            showMessage('Returning to previous page...', 'info');
+            setTimeout(() => {
+                window.location.href = 'https://sweatshoping.shop'; // Adjust to your actual back URL
+            }, 1000);
+        });
+
+        // Utility function to show messages
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = `message-box show ${type}`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
