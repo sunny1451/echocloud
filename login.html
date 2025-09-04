@@ -209,7 +209,7 @@
                 <button class="btn-gradient" onclick="login()" aria-label="Sign In">Sign In</button>
                 <p id="error" class="message error" role="alert"></p>
                 <p id="success" class="message success" role="alert"></p>
-                <a href="http://sweatshoping.shop/regisert.html" class="link" aria-label="Create Your Account">Create Your Account</a>
+                <a href="http://sweatshoping.shop/register.html" class="link" aria-label="Create Your Account">Create Your Account</a>
             </div>
         </div>
     </div>
@@ -246,7 +246,7 @@
         } else {
             onAuthStateChanged(auth, user => {
                 if (user) {
-                    window.location.href = 'http://sweatshoping.shop/home.html';
+                    window.location.href = 'http://sweatshoping.shop/';
                 }
             });
         }
@@ -318,7 +318,7 @@
 
                 // Redirect after 1.5 seconds
                 setTimeout(() => {
-                    window.location.href = 'http://sweatshoping.shop/home.html';
+                    window.location.href = 'http://sweatshoping.shop/';
                 }, 1500);
             } catch (error) {
                 console.error("Login error:", error.code, error.message);
@@ -366,3 +366,4 @@
     </script>
 </body>
 </html>
+
