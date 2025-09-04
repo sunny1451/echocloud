@@ -332,17 +332,6 @@
             });
         });
 
-        // Handle continue button click
-        continueButton.addEventListener('click', () => {
-            if (selectedTheme) {
-                const themeSlug = selectedTheme.toLowerCase().replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-                showMessage('Redirecting to your portfolio...', 'info');
-                setTimeout(() => {
-                    window.location.href = `https://sweatshoping.shop/template/${themeSlug}.html`;
-                }, 1000);
-            }
-        });
-
         // Handle back button click
         backButton.addEventListener('click', () => {
             showMessage('Returning to previous page...', 'info');
