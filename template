@@ -291,8 +291,8 @@
     <header class="navbar">
         <div class="logo">Portfolio Forge</div>
         <div class="nav-links">
-            <a href="#">Help</a>
-            <a href="#">Sign in</a>
+            <a href="http://sweatshoping.shop/help">Help</a>
+            <a href="http://sweatshoping.shop/register.html">Sign in</a>
         </div>
     </header>
 
@@ -442,7 +442,7 @@
                 const themeSlug = selectedTheme.toLowerCase().replace(/\s+/g, '-');
                 showMessage('Redirecting to your portfolio...', 'info');
                 setTimeout(() => {
-                    window.location.href = `https://sweatshoping.shop/portfolio/${themeSlug}`;
+                    window.location.href = `https://sweatshoping.shop/template/${themeSlug}`;
                 }, 1000);
             }
         });
@@ -451,7 +451,7 @@
         backButton.addEventListener('click', () => {
             showMessage('Returning to previous page...', 'info');
             setTimeout(() => {
-                window.location.href = 'https://sweatshoping.shop'; // Adjust to your actual back URL
+                window.location.href = 'http://sweatshoping.shop/'; // Adjust to your actual back URL
             }, 1000);
         });
 
