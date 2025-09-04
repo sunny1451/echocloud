@@ -302,108 +302,36 @@
             <p>Each theme is a distinct design system—pick what matches your personality.</p>
         </div>
 
-        <div class="templates-grid">
-            <div class="template-card" data-theme="Vibrant Red">
-                <div class="template-preview" style="background-color: #ef4444;"></div>
-                <h3>Vibrant Red</h3>
-                <p>Bold & Energetic</p>
-            </div>
             <div class="template-card" data-theme="Cool Green-Blue">
                 <div class="template-preview" style="background-color: #20c997;"></div>
                 <h3>Cool Green-Blue</h3>
                 <p>Modern & Minimalist</p>
             </div>
-            <div class="template-card" data-theme="Dark Coral">
-                <div class="template-preview" style="background-color: #f87171;"></div>
-                <h3>Dark Coral</h3>
-                <p>Elegant & Warm</p>
-            </div>
-            <div class="template-card" data-theme="Golden Orange">
+             <div class="template-card" data-theme="Golden Orange">
                 <div class="template-preview" style="background-color: #ffbf00;"></div>
                 <h3>Golden Orange</h3>
                 <p>Luxury & Refined</p>
-            </div>
-            <div class="template-card" data-theme="Oceanic Blue">
-                <div class="template-preview" style="background-color: #1d4ed8;"></div>
-                <h3>Oceanic Blue</h3>
-                <p>Fresh & Fluid</p>
             </div>
             <div class="template-card" data-theme="Hot Pink">
                 <div class="template-preview" style="background-color: #ff69b4;"></div>
                 <h3>Hot Pink</h3>
                 <p>Fun & Cyberpunk</p>
             </div>
-            <div class="template-card" data-theme="Lime Green">
-                <div class="template-preview" style="background-color: #a3e635;"></div>
-                <h3>Lime Green</h3>
-                <p>Futuristic & Clean</p>
-            </div>
-            <div class="template-card" data-theme="Peach Salmon">
-                <div class="template-preview" style="background-color: #fa8072;"></div>
-                <h3>Peach Salmon</h3>
-                <p>Soft & Friendly</p>
-            </div>
-            <div class="template-card" data-theme="Indigo Purple">
-                <div class="template-preview" style="background-color: #4f46e5;"></div>
-                <h3>Indigo Purple</h3>
-                <p>Mystical & Cosmic</p>
-            </div>
             <div class="template-card" data-theme="Fiery Orange">
                 <div class="template-preview" style="background-color: #f97316;"></div>
                 <h3>Fiery Orange</h3>
                 <p>Bold & Aggressive</p>
-            </div>
-            <div class="template-card" data-theme="Teal Mint">
-                <div class="template-preview" style="background-color: #2dd4bf;"></div>
-                <h3>Teal Mint</h3>
-                <p>Fresh & Natural</p>
-            </div>
-            <div class="template-card" data-theme="Deep Red">
-                <div class="template-preview" style="background-color: #991b1b;"></div>
-                <h3>Deep Red</h3>
-                <p>Dramatic & Cinematic</p>
-            </div>
-            <div class="template-card" data-theme="Steel Blue">
-                <div class="template-preview" style="background-color: #4a6785;"></div>
-                <h3>Steel Blue</h3>
-                <p>Industrial & Sleek</p>
-            </div>
-            <div class="template-card" data-theme="Olive Green">
-                <div class="template-preview" style="background-color: #84a053;"></div>
-                <h3>Olive Green</h3>
-                <p>Earthy & Eco-friendly</p>
-            </div>
-            <div class="template-card" data-theme="Orchid Purple">
-                <div class="template-preview" style="background-color: #da70d6;"></div>
-                <h3>Orchid Purple</h3>
-                <p>Feminine & Elegant</p>
             </div>
             <div class="template-card" data-theme="Brown Chocolate">
                 <div class="template-preview" style="background-color: #7b3f00;"></div>
                 <h3>Brown Chocolate</h3>
                 <p>Cozy & Handcrafted</p>
             </div>
-            <div class="template-card" data-theme="Slate Gray">
-                <div class="template-preview" style="background-color: #475569;"></div>
-                <h3>Slate Gray</h3>
-                <p>Professional & Modern</p>
-            </div>
-            <div class="template-card" data-theme="Khaki Lemon">
-                <div class="template-preview" style="background-color: #b7b045;"></div>
-                <h3>Khaki Lemon</h3>
-                <p>Playful & Quirky</p>
-            </div>
             <div class="template-card" data-theme="Crimson Red">
                 <div class="template-preview" style="background-color: #dc2626;"></div>
                 <h3>Crimson Red</h3>
                 <p>Passionate & Luxury</p>
             </div>
-            <div class="template-card" data-theme="Royal Blue">
-                <div class="template-preview" style="background-color: #4169e1;"></div>
-                <h3>Royal Blue</h3>
-                <p>Regal & Classy</p>
-            </div>
-        </div>
     </main>
 
     <div class="sticky-footer">
