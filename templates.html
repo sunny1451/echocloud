@@ -15,6 +15,7 @@
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
+
         body {
             background: #f0f0f0;
             color: #333;
@@ -22,6 +23,7 @@
             overflow-x: hidden;
             position: relative;
         }
+
         /* Navbar */
         .navbar {
             display: flex;
@@ -34,12 +36,14 @@
             top: 0;
             z-index: 10;
         }
+
         .logo {
             font-size: 22px;
             font-weight: 700;
             color: #FF6F61;
             letter-spacing: 1px;
         }
+
         .nav-links a {
             margin-left: 20px;
             color: #555;
@@ -47,10 +51,12 @@
             font-weight: 500;
             transition: color 0.3s, transform 0.3s;
         }
+
         .nav-links a:hover {
             color: #FF6F61;
             transform: scale(1.05);
         }
+
         /* Main Container */
         .container {
             max-width: 1200px;
@@ -60,26 +66,31 @@
             flex-direction: column;
             gap: 40px;
         }
+
         /* Template Selection */
         .step-header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .step-header h1 {
             font-size: 2.5em;
             font-weight: 700;
             color: #333;
             margin-bottom: 10px;
         }
+
         .step-header p {
             font-size: 1em;
             color: #666;
         }
+
         .templates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
         }
+
         .template-card {
             background: #fff;
             border: 1px solid #ddd;
@@ -95,31 +106,37 @@
             color: inherit;
             display: block;
         }
+
         .template-card:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border: 2px solid #FF6F61;
         }
+
         .template-card.selected {
             border: 2px solid #FF6F61;
             box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3);
             transform: translateY(-4px);
         }
+
         .template-preview {
             height: 120px;
             border-radius: 10px;
             margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         .template-card h3 {
             font-size: 16px;
             margin: 0;
             color: #333;
         }
+
         .template-card p {
             font-size: 12px;
             color: #666;
         }
+
         /* Sticky Footer */
         .sticky-footer {
             display: flex;
@@ -136,6 +153,7 @@
             justify-content: center;
             gap: 20px;
         }
+
         .footer-content {
             display: flex;
             flex-direction: column;
@@ -144,12 +162,14 @@
             gap: 20px;
             align-items: center;
         }
+
         .buttons {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .btn {
             background: #FF6F61;
             color: #fff;
@@ -161,14 +181,17 @@
             font-weight: 600;
             transition: transform 0.3s, box-shadow 0.3s;
         }
+
         .btn:hover {
             transform: scale(1.06);
             box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4);
         }
+
         .btn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
+
         .message-box {
             position: fixed;
             top: 20px;
@@ -182,18 +205,22 @@
             display: none;
             text-align: center;
         }
+
         .message-box.info {
             background-color: #e9ecef;
             color: #333;
         }
+
         .message-box.success {
             background-color: #28a745;
             color: #fff;
         }
+
         .message-box.error {
             background-color: #dc3545;
             color: #fff;
         }
+
         /* Responsive Design */
         @media (min-width: 1024px) {
             .container {
@@ -212,6 +239,7 @@
                 gap: 30px;
             }
         }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -244,6 +272,7 @@
                 flex-direction: column;
             }
         }
+
         @media (max-width: 480px) {
             .templates-grid {
                 grid-template-columns: 1fr;
@@ -266,6 +295,7 @@
             <a href="http://sweatshoping.shop/register.html">Sign in</a>
         </div>
     </header>
+
     <main class="container">
         <div class="step-header">
             <h1>Choose a Template Color Theme</h1>
@@ -273,37 +303,93 @@
         </div>
         <div class="templates-grid">
             <a href="https://sweatshoping.shop/coolGreenBlue.html" class="template-card" data-theme="CoolGreenBlue">
-                <div class="template-preview" style="background: linear-gradient(135deg, #20c997, #1e90ff);"></div>
+                <div class="template-preview" style="background: linear-gradient(135deg, #20c997, #1d4ed8);"></div>
                 <h3>Cool Green-Blue</h3>
                 <p>Modern & Minimalist</p>
             </a>
-            <a href="https://sweatshoping.shop/goldernOrange.html" class="template-card" data-theme="GoldenOrange">
+            <a href="https://sweatshoping.shop/goldenorange.html" class="template-card" data-theme="GoldenOrange">
                 <div class="template-preview" style="background: linear-gradient(135deg, #ffbf00, #ffa500);"></div>
                 <h3>Golden Orange</h3>
                 <p>Luxury & Refined</p>
+            </a>
+            <a href="https://sweatshoping.shop/ocanicblue.html" class="template-card" data-theme="OceanicBlue">
+                <div class="template-preview" style="background: linear-gradient(135deg, #1d4ed8, #4169e1);"></div>
+                <h3>Oceanic Blue</h3>
+                <p>Fresh & Fluid</p>
             </a>
             <a href="https://sweatshoping.shop/hotpink.html" class="template-card" data-theme="HotPink">
                 <div class="template-preview" style="background: linear-gradient(135deg, #ff69b4, #ff1493);"></div>
                 <h3>Hot Pink</h3>
                 <p>Fun & Cyberpunk</p>
             </a>
+            <a href="https://sweatshoping.shop/limeGreen.html" class="template-card" data-theme="LimeGreen">
+                <div class="template-preview" style="background: linear-gradient(135deg, #a3e635, #65a30d);"></div>
+                <h3>Lime Green</h3>
+                <p>Futuristic & Clean</p>
+            </a>
+            <a href="https://sweatshoping.shop/peachsalmon.html" class="template-card" data-theme="PeachSalmon">
+                <div class="template-preview" style="background: linear-gradient(135deg, #fa8072, #e9967a);"></div>
+                <h3>Peach Salmon</h3>
+                <p>Soft & Friendly</p>
+            </a>
+            <a href="https://sweatshoping.shop/indigopurpole.html" class="template-card" data-theme="IndigoPurple">
+                <div class="template-preview" style="background: linear-gradient(135deg, #4f46e5, #6d28d9);"></div>
+                <h3>Indigo Purple</h3>
+                <p>Mystical & Cosmic</p>
+            </a>
             <a href="https://sweatshoping.shop/flaryOrange.html" class="template-card" data-theme="FieryOrange">
                 <div class="template-preview" style="background: linear-gradient(135deg, #f97316, #e11d48);"></div>
                 <h3>Fiery Orange</h3>
                 <p>Bold & Aggressive</p>
+            </a>
+            <a href="https://sweatshoping.shop/tealmint.html" class="template-card" data-theme="TealMint">
+                <div class="template-preview" style="background: linear-gradient(135deg, #2dd4bf, #20c997);"></div>
+                <h3>Teal Mint</h3>
+                <p>Fresh & Natural</p>
+            </a>
+            <a href="https://sweatshoping.shop/deepred.html" class="template-card" data-theme="DeepRed">
+                <div class="template-preview" style="background: linear-gradient(135deg, #991b1b, #6b0f1a);"></div>
+                <h3>Deep Red</h3>
+                <p>Dramatic & Cinematic</p>
+            </a>
+            <a href="https://sweatshoping.shop/steelblue.html" class="template-card" data-theme="SteelBlue">
+                <div class="template-preview" style="background: linear-gradient(135deg, #4a6785, #2f496a);"></div>
+                <h3>Steel Blue</h3>
+                <p>Industrial & Sleek</p>
+            </a>
+            <a href="https://sweatshoping.shop/olivegreen.html" class="template-card" data-theme="OliveGreen">
+                <div class="template-preview" style="background: linear-gradient(135deg, #84a053, #5a7d23);"></div>
+                <h3>Olive Green</h3>
+                <p>Earthy & Eco-friendly</p>
+            </a>
+            <a href="https://sweatshoping.shop/orchidpurple.html" class="template-card" data-theme="OrchidPurple">
+                <div class="template-preview" style="background: linear-gradient(135deg, #da70d6, #800080);"></div>
+                <h3>Orchid Purple</h3>
+                <p>Feminine & Elegant</p>
             </a>
             <a href="https://sweatshoping.shop/brownchock.html" class="template-card" data-theme="BrownChocolate">
                 <div class="template-preview" style="background: linear-gradient(135deg, #7b3f00, #4b2e1a);"></div>
                 <h3>Brown Chocolate</h3>
                 <p>Cozy & Handcrafted</p>
             </a>
+            <a href="https://sweatshoping.shop/slightgray.html" class="template-card" data-theme="SlateGray">
+                <div class="template-preview" style="background: linear-gradient(135deg, #475569, #1e293b);"></div>
+                <h3>Slate Gray</h3>
+                <p>Professional & Modern</p>
+            </a>
+            <a href="https://sweatshoping.shop/khakilemon.html" class="template-card" data-theme="KhakiLemon">
+                <div class="template-preview" style="background: linear-gradient(135deg, #b7b045, #d2e460);"></div>
+                <h3>Khaki Lemon</h3>
+                <p>Playful & Quirky</p>
+            </a>
             <a href="https://sweatshoping.shop/crimson.html" class="template-card" data-theme="CrimsonRed">
                 <div class="template-preview" style="background: linear-gradient(135deg, #dc2626, #b91c1c);"></div>
                 <h3>Crimson Red</h3>
                 <p>Passionate & Luxury</p>
             </a>
-        </div>
+             </div>
     </main>
+
     <div class="sticky-footer">
         <div class="footer-content">
             <div class="buttons">
@@ -311,23 +397,12 @@
             </div>
         </div>
     </div>
+
     <div id="messageBox" class="message-box"></div>
+
     <script>
-        const themeCards = document.querySelectorAll('.template-card');
         const backButton = document.getElementById('backButton');
         const messageBox = document.getElementById('messageBox');
-
-        // Handle theme card selection
-        themeCards.forEach(card => {
-            card.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent immediate navigation
-                const href = card.getAttribute('href');
-                showMessage('Redirecting to your portfolio...', 'info');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 1000);
-            });
-        });
 
         // Handle back button click
         backButton.addEventListener('click', () => {
