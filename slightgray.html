@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny's Portfolio - Slate Gray Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #708090; /* Slate Gray */
+            color: #E5E5E5; /* Light gray for body text */
+            transition: background-color 0.5s ease-in-out;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            color: #FFFFFF;
+        }
+
+        /* Hero Section Gradient Background */
+        .hero-gradient {
+            background: radial-gradient(circle at top left, #5B6673, #45525D);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Social Icons Glow on Hover */
+        .social-icon {
+            transition: all 0.3s ease-in-out;
+        }
+        .social-icon:hover {
+            text-shadow: 0 0 15px #FFFFFF;
+            transform: scale(1.1);
+        }
+
+        /* Glass Effect on Profile Picture */
+        .glass-effect {
+            backdrop-filter: blur(5px) saturate(180%);
+            -webkit-backdrop-filter: blur(5px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Fade and Slide-in Animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Skills Card Hover Effect */
+        .skill-card:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            background-color: #45525D;
+        }
+        .skill-card-icon {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease-in-out;
+        }
+        .skill-card:hover .skill-card-icon {
+            filter: grayscale(0%);
+        }
+
+        /* Project Card Hover Effect */
+        .project-card-image {
+            filter: grayscale(100%);
+            transition: all 0.5s ease-in-out;
+        }
+        .project-card:hover .project-card-image {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        /* Contact Form Glowing Borders */
+        .form-input:focus, .form-input:hover {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        /* Masonry Grid for Projects */
+        .masonry-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-auto-rows: minmax(min-content, max-content);
+        }
+    </style>
+</head>
+<body class="bg-gray-700 text-gray-300">
+
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Initialization
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        let db, auth;
+        if (Object.keys(firebaseConfig).length) {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            window.db = db;
+            window.auth = auth;
+            window.appId = appId;
+            window.firestore = {
+                collection,
+                addDoc
+            };
+
+            const __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            if (__initial_auth_token) {
+                signInWithCustomToken(auth, __initial_auth_token).catch(console.error);
+            } else {
+                signInAnonymously(auth).catch(console.error);
+            }
+        } else {
+            console.error("Firebase config is not available. Firestore features will be disabled.");
+        }
+    </script>
+    
+    <!-- Hero Section -->
+    <section id="home" class="relative flex items-center justify-center min-h-screen">
+        <div class="hero-gradient absolute inset-0"></div>
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-white text-6xl md:text-8xl font-bold tracking-tight mb-4 animate-on-scroll">
+                Hi, I'm Sunny 👋
+            </h1>
+            <p class="text-silver text-xl md:text-2xl font-light mb-8 animate-on-scroll">
+                A Creative Developer & Designer
+            </p>
+            <div class="flex justify-center space-x-6 animate-on-scroll">
+                <a href="#" class="social-icon text-white text-2xl"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon text-white text-2xl"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon text-white text-2xl"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 animate-on-scroll">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center gap-12 animate-on-scroll">
+                <div class="w-full md:w-1/2 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden p-2 glass-effect">
+                        <img src="https://placehold.co/800x800/708090/FFFFFF?text=SUNNY" alt="Profile Picture" class="w-full h-full object-cover rounded-full">
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 md:text-left text-center">
+                    <p class="text-lg leading-relaxed text-gray-300">
+                        I specialize in crafting elegant and robust digital experiences. With a passion for clean design and efficient code, I bring ideas to life from concept to deployment. My expertise lies in creating user-centric interfaces that are not only beautiful but also intuitive and highly functional.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-4 bg-slate-600">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white animate-on-scroll">My Skills</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fab fa-react text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">React</h3>
+                    <p>Building dynamic, component-based user interfaces.</p>
+                </div>
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fab fa-html5 text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">HTML5/CSS3</h3>
+                    <p>Structuring and styling web pages with modern standards.</p>
+                </div>
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fab fa-js-square text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">JavaScript</h3>
+                    <p>Creating interactive and responsive web applications.</p>
+                </div>
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fas fa-drafting-compass text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">UI/UX Design</h3>
+                    <p>Crafting intuitive and user-friendly digital experiences.</p>
+                </div>
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fab fa-figma text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Figma</h3>
+                    <p>Designing, prototyping, and collaborating on interfaces.</p>
+                </div>
+                <div class="skill-card p-6 bg-slate-700 rounded-xl shadow-lg transition-all transform animate-on-scroll">
+                    <i class="fas fa-splotch text-5xl mb-4 text-silver skill-card-icon"></i>
+                    <h3 class="text-2xl font-semibold mb-2 text-white">Branding</h3>
+                    <p>Developing cohesive and memorable brand identities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 animate-on-scroll">My Projects</h2>
+            <div class="masonry-grid animate-on-scroll">
+                <!-- Project Card 1 -->
+                <div class="project-card bg-slate-600 rounded-xl overflow-hidden shadow-lg transform transition-transform">
+                    <img src="https://placehold.co/600x400/5B6673/FFFFFF?text=Website+Design" alt="Website Design" class="project-card-image w-full h-auto object-cover transition-all">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">E-Commerce Platform</h3>
+                        <p class="text-sm">A minimalist e-commerce platform with a sophisticated layout and smooth navigation.</p>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="project-card bg-slate-600 rounded-xl overflow-hidden shadow-lg transform transition-transform">
+                    <img src="https://placehold.co/600x600/5B6673/FFFFFF?text=Mobile+App" alt="Mobile App" class="project-card-image w-full h-auto object-cover transition-all">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">Fitness Tracker App</h3>
+                        <p class="text-sm">A custom fitness tracker app designed for intuitive tracking and progress visualization on the go.</p>
+                    </div>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="project-card bg-slate-600 rounded-xl overflow-hidden shadow-lg transform transition-transform">
+                    <img src="https://placehold.co/600x800/5B6673/FFFFFF?text=Brand+Identity" alt="Brand Identity" class="project-card-image w-full h-auto object-cover transition-all">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-white">Coffee Shop Branding</h3>
+                        <p class="text-sm">A complete brand identity package from logo design to packaging for a local coffee shop.</p>
+                    </div>
+                </div>
+                <!-- Add more project cards here to fill the masonry grid -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 bg-slate-600">
+        <div class="container mx-auto max-w-2xl animate-on-scroll">
+            <h2 class="text-4xl font-bold text-center mb-8 text-white">Get in Touch</h2>
+            <form id="contact-form" class="bg-slate-700 p-8 rounded-xl shadow-lg">
+                <div class="mb-6">
+                    <label for="name" class="block text-sm font-medium mb-2">Name</label>
+                    <input type="text" id="name" class="form-input w-full p-3 rounded-md bg-slate-800 border border-slate-500 text-white">
+                </div>
+                <div class="mb-6">
+                    <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="email" class="form-input w-full p-3 rounded-md bg-slate-800 border border-slate-500 text-white">
+                </div>
+                <div class="mb-6">
+                    <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                    <textarea id="message" rows="4" class="form-input w-full p-3 rounded-md bg-slate-800 border border-slate-500 text-white"></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-md bg-white text-slate-800 font-semibold shadow-md transition-all hover:scale-105 hover:bg-silver">
+                    Send Message
+                </button>
+                <p id="form-status" class="mt-4 text-center text-sm font-bold"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 px-4 bg-gray-800 text-center text-sm text-gray-400">
+        <p>Designed and built with care by Sunny.</p>
+        <p>&copy; 2024. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Intersection Observer for fade/slide-in animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Contact form submission with Firebase
+            const form = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+
+            const handleFormSubmit = async (e) => {
+                e.preventDefault();
+                formStatus.textContent = 'Sending...';
+
+                try {
+                    const db = window.db;
+                    const appId = window.appId;
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+
+                    if (!name || !email || !message) {
+                        formStatus.textContent = 'Please fill out all fields.';
+                        return;
+                    }
+
+                    await window.firestore.addDoc(window.firestore.collection(db, `/artifacts/${appId}/public/data/contact_messages`), {
+                        name,
+                        email,
+                        message,
+                        timestamp: new Date()
+                    });
+                    formStatus.textContent = 'Message sent! Thank you for reaching out.';
+                    form.reset();
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                    formStatus.textContent = 'Failed to send message. Please try again.';
+                }
+            };
+            
+            // Check for auth status before attaching form handler
+            const checkAuthInterval = setInterval(() => {
+                if (window.db && window.auth.currentUser) {
+                    clearInterval(checkAuthInterval);
+                    form.addEventListener('submit', handleFormSubmit);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
