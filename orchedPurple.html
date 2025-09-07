@@ -188,10 +188,13 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 101;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
         .modal.show {
             display: flex;
+            opacity: 1;
         }
 
         .modal-content {
@@ -204,10 +207,20 @@
             max-width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
         .hidden {
             display: none !important;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -303,7 +316,7 @@
                     <label for="edit-profile-image" class="block text-sm font-bold mb-2">Profile Image</label>
                     <input type="file" id="edit-profile-image" accept="image/*" class="w-full p-3 bg-transparent border-2 border-[var(--orchid-purple)] text-[var(--text-color)] neon-form-field rounded-lg">
                 </div>
-                <div id="projects-container">
+                <div id="projects-container" class="space-y-4">
                     <div class="project-section" data-index="1">
                         <div>
                             <label for="edit-project1-title" class="block text-sm font-bold mb-2">Project 1 Title</label>
@@ -320,8 +333,8 @@
                         <button type="button" class="remove-project mt-2 text-sm text-orchid-purple hover:text-pure-white" data-index="1">Remove Project</button>
                     </div>
                 </div>
-                <button type="button" id="add-project" class="py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Project</button>
-                <div id="skills-container">
+                <button type="button" id="add-project" class="add-button py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Project</button>
+                <div id="skills-container" class="space-y-4">
                     <div class="skill-section" data-index="1">
                         <div>
                             <label for="edit-skill1-name" class="block text-sm font-bold mb-2">Skill 1 Name</label>
@@ -330,8 +343,8 @@
                         <button type="button" class="remove-skill mt-2 text-sm text-orchid-purple hover:text-pure-white" data-index="1">Remove Skill</button>
                     </div>
                 </div>
-                <button type="button" id="add-skill" class="py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Skill</button>
-                <div id="testimonials-container">
+                <button type="button" id="add-skill" class="add-button py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Skill</button>
+                <div id="testimonials-container" class="space-y-4">
                     <div class="testimonial-section" data-index="1">
                         <div>
                             <label for="edit-testimonial1-text" class="block text-sm font-bold mb-2">Testimonial 1 Text</label>
@@ -344,7 +357,7 @@
                         <button type="button" class="remove-testimonial mt-2 text-sm text-orchid-purple hover:text-pure-white" data-index="1">Remove Testimonial</button>
                     </div>
                 </div>
-                <button type="button" id="add-testimonial" class="py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Testimonial</button>
+                <button type="button" id="add-testimonial" class="add-button py-2 px-4 rounded-full bg-gradient-to-r from-orchid-purple to-[#8A2BE2] text-pure-white ripple-btn">Add Testimonial</button>
                 <div class="flex justify-between">
                     <button type="submit" class="w-full py-3 mr-2 text-lg font-bold uppercase rounded-full bg-gradient-to-r from-[var(--orchid-purple)] to-[#8A2BE2] text-[var(--pure-white)] ripple-btn">Save Changes</button>
                     <button type="button" id="cancel-edit-btn" class="w-full py-3 ml-2 text-lg font-bold uppercase rounded-full border border-[var(--orchid-purple)] text-[var(--text-color)]">Cancel</button>
@@ -387,7 +400,7 @@
     <section id="portfolio" class="py-20 p-8 fade-in">
         <div class="container mx-auto">
             <h2 class="text-4xl font-bold text-center mb-12">Projects</h2>
-            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="projects-container-display" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
     </section>
     
@@ -395,7 +408,7 @@
     <section id="skills" class="py-20 p-8 fade-in">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-12">Skills</h2>
-            <div id="skills-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 max-w-2xl mx-auto"></div>
+            <div id="skills-container-display" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 max-w-2xl mx-auto"></div>
         </div>
     </section>
 
@@ -403,7 +416,7 @@
     <section id="testimonials" class="py-20 p-8 fade-in">
         <div class="container mx-auto">
             <h2 class="text-4xl font-bold text-center mb-12">Testimonials</h2>
-            <div id="testimonials-container" class="grid md:grid-cols-2 gap-8"></div>
+            <div id="testimonials-container-display" class="grid md:grid-cols-2 gap-8"></div>
         </div>
     </section>
 
@@ -533,6 +546,7 @@
 
             // Check if user is owner
             window.auth.onAuthStateChanged(async user => {
+                console.log('Auth state changed:', user ? 'User logged in' : 'No user');
                 if (user && handleFromUrl) {
                     const docRef = window.firestore.doc(window.db, 'portfolios', handleFromUrl);
                     const docSnap = await window.firestore.getDoc(docRef);
@@ -554,6 +568,7 @@
 
             // Toggle controls based on mode
             function toggleControls() {
+                console.log('Toggling controls, isOwner:', isOwner, 'isPublished:', isPublished);
                 controlButtons.classList.add('hidden');
                 if (isPublished && handleFromUrl) {
                     if (isOwner) {
@@ -573,31 +588,39 @@
             // Edit Button Logic
             editButton.addEventListener('click', async (e) => {
                 e.preventDefault();
+                console.log('Edit button clicked');
                 if (!window.auth.currentUser) {
+                    console.log('No authenticated user');
                     editFormStatus.textContent = 'Please log in to edit your portfolio.';
                     editFormStatus.style.color = 'red';
                     await ensureAuthenticated();
                     return;
                 }
                 if (!isOwner) {
+                    console.log('User is not owner');
                     editFormStatus.textContent = 'Only the portfolio owner can edit.';
                     editFormStatus.style.color = 'red';
                     return;
                 }
                 if (isPublished) {
+                    console.log('Portfolio is published');
                     editFormStatus.textContent = 'Portfolio is published and cannot be edited. Unpublish to edit.';
                     editFormStatus.style.color = 'red';
                     return;
                 }
+                console.log('Opening edit modal');
                 editFormStatus.textContent = 'Loading portfolio data...';
                 await loadPortfolioData();
+                editFormContainer.classList.remove('hidden');
                 editFormContainer.classList.add('show');
                 editFormStatus.textContent = '';
             });
 
             // Cancel Edit
             const exitEditForm = () => {
+                console.log('Cancel edit clicked');
                 editFormContainer.classList.remove('show');
+                editFormContainer.classList.add('hidden');
                 editForm.reset();
                 editFormStatus.textContent = '';
                 projectCount = defaultData.projects.length;
@@ -661,49 +684,66 @@
             }
 
             addProjectButton.addEventListener('click', () => {
+                console.log('Add project clicked');
                 projectCount++;
                 projectsContainer.insertAdjacentHTML('beforeend', createProjectSection(projectCount));
                 attachRemoveListeners();
             });
 
             addSkillButton.addEventListener('click', () => {
+                console.log('Add skill clicked');
                 skillCount++;
                 skillsContainer.insertAdjacentHTML('beforeend', createSkillSection(skillCount));
                 attachRemoveListeners();
             });
 
             addTestimonialButton.addEventListener('click', () => {
+                console.log('Add testimonial clicked');
                 testimonialCount++;
                 testimonialsContainer.insertAdjacentHTML('beforeend', createTestimonialSection(testimonialCount));
                 attachRemoveListeners();
             });
 
             function attachRemoveListeners() {
+                console.log('Attaching remove listeners');
                 document.querySelectorAll('.remove-project').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const index = btn.dataset.index;
-                        document.querySelector(`.project-section[data-index="${index}"]`).remove();
-                        projectCount = Math.max(1, document.querySelectorAll('.project-section').length);
-                    });
+                    btn.removeEventListener('click', handleRemoveProject); // Prevent duplicate listeners
+                    btn.addEventListener('click', handleRemoveProject);
                 });
                 document.querySelectorAll('.remove-skill').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const index = btn.dataset.index;
-                        document.querySelector(`.skill-section[data-index="${index}"]`).remove();
-                        skillCount = Math.max(1, document.querySelectorAll('.skill-section').length);
-                    });
+                    btn.removeEventListener('click', handleRemoveSkill);
+                    btn.addEventListener('click', handleRemoveSkill);
                 });
                 document.querySelectorAll('.remove-testimonial').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const index = btn.dataset.index;
-                        document.querySelector(`.testimonial-section[data-index="${index}"]`).remove();
-                        testimonialCount = Math.max(1, document.querySelectorAll('.testimonial-section').length);
-                    });
+                    btn.removeEventListener('click', handleRemoveTestimonial);
+                    btn.addEventListener('click', handleRemoveTestimonial);
                 });
+            }
+
+            function handleRemoveProject(e) {
+                const index = e.target.dataset.index;
+                document.querySelector(`.project-section[data-index="${index}"]`).remove();
+                projectCount = Math.max(1, document.querySelectorAll('.project-section').length);
+                console.log('Project removed, new count:', projectCount);
+            }
+
+            function handleRemoveSkill(e) {
+                const index = e.target.dataset.index;
+                document.querySelector(`.skill-section[data-index="${index}"]`).remove();
+                skillCount = Math.max(1, document.querySelectorAll('.skill-section').length);
+                console.log('Skill removed, new count:', skillCount);
+            }
+
+            function handleRemoveTestimonial(e) {
+                const index = e.target.dataset.index;
+                document.querySelector(`.testimonial-section[data-index="${index}"]`).remove();
+                testimonialCount = Math.max(1, document.querySelectorAll('.testimonial-section').length);
+                console.log('Testimonial removed, new count:', testimonialCount);
             }
 
             // Publish Button Logic
             publishButton.addEventListener('click', async () => {
+                console.log('Publish button clicked');
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to publish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -720,14 +760,18 @@
                     editFormStatus.style.color = 'red';
                     return;
                 }
+                publishModal.classList.remove('hidden');
                 publishModal.classList.add('show');
             });
 
             cancelPublish.addEventListener('click', () => {
+                console.log('Cancel publish clicked');
                 publishModal.classList.remove('show');
+                publishModal.classList.add('hidden');
             });
 
             confirmPublish.addEventListener('click', async () => {
+                console.log('Confirm publish clicked');
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to publish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -742,17 +786,21 @@
                     });
                     isPublished = true;
                     publishModal.classList.remove('show');
+                    publishModal.classList.add('hidden');
                     publicLink.value = `https://your-domain.com/portfolio.html?user=${currentUserName}`;
+                    successModal.classList.remove('hidden');
                     successModal.classList.add('show');
                     toggleControls();
                     await loadPortfolioData();
                 } catch (error) {
+                    console.error('Error publishing portfolio:', error);
                     editFormStatus.textContent = 'Error publishing portfolio: ' + error.message;
                     editFormStatus.style.color = 'red';
                 }
             });
 
             copyLink.addEventListener('click', () => {
+                console.log('Copy link clicked');
                 publicLink.select();
                 document.execCommand('copy');
                 copyLink.textContent = 'Link Copied!';
@@ -760,10 +808,13 @@
             });
 
             closeSuccess.addEventListener('click', () => {
+                console.log('Close success modal clicked');
                 successModal.classList.remove('show');
+                successModal.classList.add('hidden');
             });
 
             unpublishButton.addEventListener('click', async () => {
+                console.log('Unpublish button clicked');
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to unpublish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -786,6 +837,7 @@
                         alert('Portfolio unpublished. You can now edit it again.');
                         await loadPortfolioData();
                     } catch (error) {
+                        console.error('Error unpublishing portfolio:', error);
                         editFormStatus.textContent = 'Error unpublishing portfolio: ' + error.message;
                         editFormStatus.style.color = 'red';
                     }
@@ -868,6 +920,7 @@
                     editFormStatus.style.color = 'green';
                     await loadPortfolioData();
                     editFormContainer.classList.remove('show');
+                    editFormContainer.classList.add('hidden');
                     return true;
                 } catch (error) {
                     console.error('Error saving data:', error);
@@ -880,6 +933,7 @@
             // Edit form submission
             editForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                console.log('Edit form submitted');
                 editFormStatus.textContent = 'Saving...';
                 try {
                     const profileImageFile = document.getElementById('edit-profile-image').files[0];
@@ -955,6 +1009,7 @@
 
             // Update page content
             const updatePageContent = (data) => {
+                console.log('Updating page content with data:', data);
                 // Update form fields
                 document.getElementById('edit-name').value = data.name || '';
                 document.getElementById('edit-email').value = data.email || '';
@@ -1012,7 +1067,7 @@
                 document.getElementById('contact-email').textContent = data.email ? `Email: ${data.email}` : '';
 
                 // Render projects
-                const projectsContainerDisplay = document.getElementById('projects-container');
+                const projectsContainerDisplay = document.getElementById('projects-container-display');
                 projectsContainerDisplay.innerHTML = '';
                 data.projects.forEach((project, index) => {
                     const defaultProject = defaultData.projects[index] || { title: 'Untitled Project', desc: 'No description available.', image: 'https://placehold.co/600x400/4B1D47/DA70D6?text=Project' };
@@ -1031,7 +1086,7 @@
                 });
 
                 // Render skills
-                const skillsContainerDisplay = document.getElementById('skills-container');
+                const skillsContainerDisplay = document.getElementById('skills-container-display');
                 skillsContainerDisplay.innerHTML = '';
                 data.skills.forEach((skill, index) => {
                     const defaultSkill = defaultData.skills[index] || { name: 'Skill', icon: 'fas fa-code' };
@@ -1049,7 +1104,7 @@
                 });
 
                 // Render testimonials
-                const testimonialsContainerDisplay = document.getElementById('testimonials-container');
+                const testimonialsContainerDisplay = document.getElementById('testimonials-container-display');
                 testimonialsContainerDisplay.innerHTML = '';
                 data.testimonials.forEach((testimonial, index) => {
                     const defaultTestimonial = defaultData.testimonials[index] || { text: 'No testimonial text.', author: 'Anonymous' };
@@ -1070,6 +1125,7 @@
             // Load portfolio data
             const loadPortfolioData = async () => {
                 try {
+                    console.log('Loading portfolio data for user:', handleFromUrl || currentUserName);
                     const userName = handleFromUrl || currentUserName;
                     let data = defaultData;
                     if (userName) {
@@ -1079,7 +1135,12 @@
                             data = { ...defaultData, ...docSnap.data() };
                             isPublished = data.status === 'published';
                             currentUserName = data.name || handleFromUrl;
+                            console.log('Portfolio data loaded:', data);
+                        } else {
+                            console.log('No portfolio data found, using default data');
                         }
+                    } else {
+                        console.log('No userName, using default data');
                     }
                     projectCount = Math.max(1, data.projects.length);
                     skillCount = Math.max(1, data.skills.length);
@@ -1173,6 +1234,7 @@
             // Firestore Contact Form & Visitor Counter
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
+                console.log('Contact form submitted');
                 formStatus.textContent = 'Sending...';
                 try {
                     const name = document.getElementById('name').value.trim();
@@ -1201,6 +1263,7 @@
 
             const setupFirestore = () => {
                 if (!window.db) return;
+                console.log('Setting up Firestore, userName:', currentUserName || 'default');
 
                 const visitorDocRef = window.firestore.doc(window.db, 'portfolios', currentUserName || 'default', 'visitor_counter', 'count');
 
@@ -1219,13 +1282,14 @@
                     }
                 });
 
-                updateVisitorCount().catch(console.error);
+                updateVisitorCount().catch(error => console.error('Error updating visitor count:', error));
 
                 form.addEventListener('submit', handleFormSubmit);
             };
 
             const checkAuth = setInterval(() => {
                 if (window.db && window.auth.currentUser) {
+                    console.log('Auth and Firestore ready, setting up');
                     clearInterval(checkAuth);
                     setupFirestore();
                     loadPortfolioData();
