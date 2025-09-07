@@ -274,47 +274,25 @@
         }
 
         /* Enhanced Edit Button Styling */
-        .edit-button {
+        .edit-button, .control-button {
             background-color: var(--glowing-red);
             color: var(--deep-black);
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
+            padding: 0.5rem 1rem; /* Reduced padding */
+            font-size: 0.9rem; /* Reduced font size */
             font-weight: 600;
             border-radius: 9999px;
             border: 2px solid var(--text-color);
             box-shadow: 0 0 15px rgba(255, 69, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.5s ease;
         }
-        .edit-button:hover {
+        .edit-button:hover, .control-button:hover {
             transform: scale(1.15);
             box-shadow: 0 0 25px rgba(255, 69, 0, 0.7);
         }
-        .edit-button i {
+        .edit-button i, .control-button i {
             margin-right: 0.5rem;
         }
-        body.dark-mode .edit-button {
-            background-color: #FF6347;
-            color: #000000;
-            border-color: var(--text-color);
-        }
-
-        /* Control Buttons */
-        .control-button {
-            background-color: var(--glowing-red);
-            color: var(--deep-black);
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 9999px;
-            border: 2px solid var(--text-color);
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        .control-button:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 25px rgba(255, 69, 0, 0.7);
-        }
-        body.dark-mode .control-button {
+        body.dark-mode .edit-button, body.dark-mode .control-button {
             background-color: #FF6347;
             color: #000000;
             border-color: var(--text-color);
@@ -532,7 +510,7 @@
     <section id="skills" class="py-20 px-4 bg-deep-black">
         <div class="container mx-auto max-w-4xl">
             <h2 class="text-4xl font-bold text-center font-['Noto_Serif_JP'] mb-12">My Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="skills-container"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="skills-container-display"></div>
         </div>
     </section>
 
@@ -630,10 +608,19 @@
             const addSkillButton = document.getElementById('add-skill');
             const experiencesContainer = document.getElementById('experiences-container');
             const addExperienceButton = document.getElementById('add-experience');
+            const portfolioContainer = document.getElementById('portfolio-container');
+            const skillsContainerDisplay = document.getElementById('skills-container-display');
+            const experienceContainer = document.getElementById('experience-container');
+            const contactForm = document.getElementById('contact-form');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const projectModal = document.getElementById('project-modal');
+            const closeProjectModal = document.getElementById('close-project-modal');
 
             let currentUserName = 'Sunny';
             let isPublished = false;
             let isOwner = false;
+            let isLoading = false; // Prevent multiple load calls
             const urlParams = new URLSearchParams(window.location.search);
             const handleFromUrl = urlParams.get('user') || '';
             const imgBBApiKey = '01400454f4aafb70d1c9beddec5cbbc5';
@@ -699,7 +686,7 @@
 
             // Intersection Observer for fade/slide-in animations
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
@@ -724,7 +711,6 @@
                     }
                 });
             }, { threshold: 0.5 });
-            document.querySelectorAll('.progress-circle').forEach(circle => progressObserver.observe(circle));
 
             // Interactive Cursor Trail
             const trail = document.getElementById('cursor-trail');
@@ -760,63 +746,69 @@
                         console.error('Anonymous sign-in failed:', error);
                         editFormStatus.textContent = 'Authentication failed: ' + error.message;
                         editFormStatus.style.color = 'red';
+                        throw error;
                     }
                 }
             }
-
-            // Check if user is owner
-            window.auth.onAuthStateChanged(async user => {
-                console.log('Auth state changed:', user ? 'User logged in' : 'No user');
-                if (user && handleFromUrl) {
-                    const docRef = window.firestore.doc(window.db, 'portfolios', handleFromUrl);
-                    const docSnap = await window.firestore.getDoc(docRef);
-                    if (docSnap.exists() && docSnap.data().userId === user.uid) {
-                        isOwner = true;
-                        currentUserName = handleFromUrl;
-                        isPublished = docSnap.data().status === 'published';
-                    }
-                    toggleControls();
-                    await loadPortfolioData();
-                } else if (user) {
-                    isOwner = true;
-                    toggleControls();
-                    await loadPortfolioData();
-                } else {
-                    await ensureAuthenticated();
-                }
-            });
 
             // Toggle controls based on mode
             function toggleControls() {
                 console.log('Toggling controls: isPublished=', isPublished, 'isOwner=', isOwner, 'handleFromUrl=', handleFromUrl);
                 controlButtons.classList.add('hidden');
-                if (isPublished && handleFromUrl) {
-                    if (isOwner) {
-                        controlButtons.classList.remove('hidden');
+                if (isOwner) {
+                    controlButtons.classList.remove('hidden');
+                    if (isPublished && handleFromUrl) {
                         editButton.classList.add('hidden');
                         publishButton.classList.add('hidden');
                         unpublishButton.classList.remove('hidden');
                         console.log('Showing unpublish button for owner');
                     } else {
-                        console.log('Hiding all buttons for non-owner in published mode');
+                        editButton.classList.remove('hidden');
+                        publishButton.classList.remove('hidden');
+                        unpublishButton.classList.add('hidden');
+                        console.log('Showing edit and publish buttons for owner in draft mode');
                     }
-                } else if (isOwner) {
-                    controlButtons.classList.remove('hidden');
-                    editButton.classList.remove('hidden');
-                    publishButton.classList.remove('hidden');
-                    unpublishButton.classList.add('hidden');
-                    console.log('Showing edit and publish buttons for owner in draft mode');
                 } else {
-                    console.log('Hiding all buttons for non-authenticated user');
+                    console.log('Hiding all buttons for non-owner or non-authenticated user');
                 }
             }
 
+            // Debounce utility to prevent multiple rapid clicks
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
             // Edit Button Logic
-            editButton.addEventListener('click', async () => {
+            const handleEditClick = debounce(async () => {
+                if (!window.auth.currentUser) {
+                    editFormStatus.textContent = 'Please log in to edit your portfolio.';
+                    editFormStatus.style.color = 'red';
+                    await ensureAuthenticated();
+                    return;
+                }
+                if (!isOwner) {
+                    editFormStatus.textContent = 'Only the portfolio owner can edit.';
+                    editFormStatus.style.color = 'red';
+                    return;
+                }
+                if (isPublished) {
+                    editFormStatus.textContent = 'Portfolio is published and read-only. Unpublish to edit.';
+                    editFormStatus.style.color = 'red';
+                    return;
+                }
                 await loadPortfolioData();
                 editFormContainer.classList.remove('hidden');
                 editFormContainer.classList.add('show');
-            });
+            }, 300);
+            editButton.addEventListener('click', handleEditClick);
 
             // Cancel Edit
             cancelEdit.addEventListener('click', () => {
@@ -898,7 +890,7 @@
             });
 
             // Publish Button Logic
-            publishButton.addEventListener('click', async () => {
+            const handlePublishClick = debounce(async () => {
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to publish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -916,13 +908,14 @@
                     return;
                 }
                 publishModal.classList.add('show');
-            });
+            }, 300);
+            publishButton.addEventListener('click', handlePublishClick);
 
             cancelPublish.addEventListener('click', () => {
                 publishModal.classList.remove('show');
             });
 
-            confirmPublish.addEventListener('click', async () => {
+            const handleConfirmPublish = debounce(async () => {
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to publish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -937,15 +930,17 @@
                     });
                     isPublished = true;
                     publishModal.classList.remove('show');
-                    publicLink.value = `https://sweatshoping.shop/crimsonRed.html?user=${currentUserName}`;
+                    publicLink.value = `${window.location.origin}${window.location.pathname}?user=${currentUserName}`;
                     successModal.classList.add('show');
                     toggleControls();
                     await loadPortfolioData();
                 } catch (error) {
+                    console.error('Error publishing portfolio:', error);
                     editFormStatus.textContent = 'Error publishing portfolio: ' + error.message;
                     editFormStatus.style.color = 'red';
                 }
-            });
+            }, 300);
+            confirmPublish.addEventListener('click', handleConfirmPublish);
 
             // Copy Link Logic
             copyLink.addEventListener('click', () => {
@@ -962,7 +957,7 @@
             });
 
             // Unpublish Button Logic
-            unpublishButton.addEventListener('click', async () => {
+            const handleUnpublishClick = debounce(async () => {
                 if (!window.auth.currentUser) {
                     editFormStatus.textContent = 'Please log in to unpublish your portfolio.';
                     editFormStatus.style.color = 'red';
@@ -985,11 +980,13 @@
                         alert('Portfolio unpublished. You can now edit it again.');
                         await loadPortfolioData();
                     } catch (error) {
+                        console.error('Error unpublishing portfolio:', error);
                         editFormStatus.textContent = 'Error unpublishing portfolio: ' + error.message;
                         editFormStatus.style.color = 'red';
                     }
                 }
-            });
+            }, 300);
+            unpublishButton.addEventListener('click', handleUnpublishClick);
 
             // Upload image to ImgBB
             const uploadToImgBB = async (file) => {
@@ -1009,6 +1006,8 @@
                     }
                 } catch (error) {
                     console.error('ImgBB upload error:', error);
+                    editFormStatus.textContent = 'Error uploading image: ' + error.message;
+                    editFormStatus.style.color = 'red';
                     return '';
                 }
             };
@@ -1156,18 +1155,22 @@
 
             // Load portfolio data from Firestore
             const loadPortfolioData = async () => {
+                if (isLoading) return; // Prevent multiple simultaneous calls
+                isLoading = true;
                 try {
                     const userName = handleFromUrl || currentUserName;
-                    if (!userName) {
-                        updatePageContent(defaultData);
-                        return;
+                    let data = defaultData;
+
+                    if (userName) {
+                        const docRef = window.firestore.doc(window.db, 'portfolios', userName);
+                        const docSnap = await window.firestore.getDoc(docRef);
+                        if (docSnap.exists()) {
+                            data = { ...defaultData, ...docSnap.data() };
+                            isPublished = data.status === 'published';
+                            currentUserName = data.name || handleFromUrl;
+                        }
                     }
 
-                    const docRef = window.firestore.doc(window.db, 'portfolios', userName);
-                    const docSnap = await window.firestore.getDoc(docRef);
-                    const data = docSnap.exists() ? { ...defaultData, ...docSnap.data() } : defaultData;
-                    isPublished = data.status === 'published';
-                    currentUserName = data.name || handleFromUrl;
                     projectCount = data.projects.length || 1;
                     skillCount = data.skills.length || 1;
                     experienceCount = data.experiences.length || 1;
@@ -1178,6 +1181,9 @@
                     console.error('Error loading data:', error);
                     editFormStatus.textContent = 'Error loading portfolio: ' + error.message;
                     editFormStatus.style.color = 'red';
+                    updatePageContent(defaultData); // Fallback to default data
+                } finally {
+                    isLoading = false;
                 }
             };
 
@@ -1276,7 +1282,6 @@
                 document.getElementById('contact-email').textContent = data.email ? `Email: ${data.email}` : '';
 
                 // Render projects
-                const portfolioContainer = document.getElementById('portfolio-container');
                 portfolioContainer.innerHTML = data.projects.map((project, index) => `
                     <div class="card-flip relative w-full h-72" onclick="showProjectModal(${index})">
                         <div class="card-inner w-full h-full bg-crimson-red p-4 rounded-lg shadow-xl">
@@ -1292,8 +1297,7 @@
                 `).join('');
 
                 // Render skills
-                const skillsContainer = document.getElementById('skills-container');
-                skillsContainer.innerHTML = data.skills.map((skill, index) => `
+                skillsContainerDisplay.innerHTML = data.skills.map((skill, index) => `
                     <div class="flex flex-col items-center">
                         <div class="progress-circle" data-progress="${skill.progress || defaultData.skills[index]?.progress || 0}">
                             <span class="z-10 text-text-color font-bold text-xl">${skill.progress || defaultData.skills[index]?.progress || 0}%</span>
@@ -1304,7 +1308,6 @@
                 document.querySelectorAll('.progress-circle').forEach(circle => progressObserver.observe(circle));
 
                 // Render experiences
-                const experienceContainer = document.getElementById('experience-container');
                 experienceContainer.innerHTML = data.experiences.map((item, index) => `
                     <div class="flex items-center gap-6 is-visible">
                         <div class="w-12 h-12 rounded-full bg-crimson-red flex items-center justify-center">
@@ -1327,16 +1330,12 @@
                         document.getElementById('modal-title').textContent = project.title || defaultData.projects[index]?.title || 'Untitled Project';
                         document.getElementById('modal-description').textContent = project.description || defaultData.projects[index]?.description || 'No description provided';
                         document.getElementById('modal-details').textContent = project.details || defaultData.projects[index]?.details || 'No details provided';
-                        document.getElementById('project-modal').classList.add('show');
+                        projectModal.classList.add('show');
                     }
                 };
             };
 
             // Contact form submission
-            const contactForm = document.getElementById('contact-form');
-            const confirmationModal = document.getElementById('confirmation-modal');
-            const closeModalBtn = document.getElementById('close-modal');
-
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
                 const formStatus = document.getElementById('form-status');
@@ -1370,26 +1369,40 @@
                     confirmationModal.classList.add('show');
                 }
             };
-
-            const checkAuthInterval = setInterval(() => {
-                if (window.db && window.auth.currentUser) {
-                    clearInterval(checkAuthInterval);
-                    contactForm.addEventListener('submit', handleFormSubmit);
-                    loadPortfolioData();
-                }
-            }, 100);
+            contactForm.addEventListener('submit', handleFormSubmit);
 
             closeModalBtn.addEventListener('click', () => {
                 confirmationModal.classList.remove('show');
                 confirmationModal.classList.add('hidden');
             });
 
-            document.getElementById('close-project-modal').addEventListener('click', () => {
-                document.getElementById('project-modal').classList.remove('show');
+            closeProjectModal.addEventListener('click', () => {
+                projectModal.classList.remove('show');
             });
 
-            // Load data on page load
-            loadPortfolioData();
+            // Check authentication and load data
+            window.auth.onAuthStateChanged(async user => {
+                console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+                if (user && handleFromUrl) {
+                    const docRef = window.firestore.doc(window.db, 'portfolios', handleFromUrl);
+                    const docSnap = await window.firestore.getDoc(docRef);
+                    if (docSnap.exists() && docSnap.data().userId === user.uid) {
+                        isOwner = true;
+                        currentUserName = handleFromUrl;
+                        isPublished = docSnap.data().status === 'published';
+                    }
+                    toggleControls();
+                    await loadPortfolioData();
+                } else if (user) {
+                    isOwner = true;
+                    toggleControls();
+                    await loadPortfolioData();
+                } else {
+                    await ensureAuthenticated();
+                    toggleControls();
+                    await loadPortfolioData();
+                }
+            });
         });
     </script>
 </body>
