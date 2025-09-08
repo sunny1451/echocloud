@@ -420,6 +420,10 @@
                             <input type="text" id="edit-experience1-subtitle" class="w-full p-4 rounded-xl neon-input">
                         </div>
                         <div>
+                            <label for="edit-experience1-year" class="block mb-2 text-sm">Experience 1 Year</label>
+                            <input type="text" id="edit-experience1-year" class="w-full p-4 rounded-xl neon-input">
+                        </div>
+                        <div>
                             <label for="edit-experience1-desc" class="block mb-2 text-sm">Experience 1 Description</label>
                             <textarea id="edit-experience1-desc" rows="4" class="w-full p-4 rounded-xl neon-input"></textarea>
                         </div>
@@ -1201,7 +1205,7 @@
 
                 // Render experiences
                 const experienceContainer = document.getElementById('experience-container');
-                experienceContainer.innerHTML = data.experiences.map((item, index) => `
+                experienceContainer.innerHTML = data.experiences.length ? data.experiences.map((item, index) => `
                     <div class="flex items-center gap-6 milestone-pop" style="animation-delay: ${index * 0.2}s;">
                         <div class="milestone-buoy w-12 h-12 rounded-full glass-card flex items-center justify-center">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -1214,7 +1218,20 @@
                             <p class="mt-2 text-md">${item.description || defaultData.experiences[index]?.description || 'No description provided'}</p>
                         </div>
                     </div>
-                `).join('');
+                `).join('') : `
+                    <div class="flex items-center gap-6 milestone-pop">
+                        <div class="milestone-buoy w-12 h-12 rounded-full glass-card flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 glass-card p-4 rounded-xl">
+                            <h3 class="text-xl font-bold">No Experience Added</h3>
+                            <p class="text-sm text-gray-400 italic">Please add your experience</p>
+                            <p class="mt-2 text-md">Click the edit button to add your education or work experience.</p>
+                        </div>
+                    </div>
+                `;
 
                 // Update project modal
                 window.showProjectModal = function(index) {
@@ -1336,7 +1353,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
