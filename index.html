@@ -114,7 +114,7 @@
         .how-it-works-step {
             background: white;
             border-radius: 0.5rem;
-            padding: 1rem; /* Reduced padding for mobile */
+            padding: 1rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
@@ -221,12 +221,32 @@
     </style>
 </head>
 <body>
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFoIoUsTJ_4NzkV-sdNffAOjbHRxSRIp8",
+            authDomain: "echo-625fa.firebaseapp.com",
+            projectId: "echo-625fa",
+            storageBucket: "echo-625fa.firebasestorage.app",
+            messagingSenderId: "890702112097",
+            appId: "1:890702112097:web:e81927ba359a8c426c1120",
+            measurementId: "G-DMBW4N7J2T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        window.auth = auth;
+    </script>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="/" class="logo">🗂️ Echo Portfolio</a>
-            <div class="flex space-x-4 items-center">
-                <a href="http://sweatshoping.shop/login" class="text-base">Login</a>
+            <div id="auth-buttons" class="flex space-x-4 items-center">
+                <a href="http://sweatshoping.shop/login" class="text-base login-btn">Login</a>
                 <a href="http://sweatshoping.shop/register.html" class="signup-btn">Sign Up</a>
             </div>
         </div>
@@ -293,7 +313,7 @@
         </div>
     </section>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -309,25 +329,37 @@
     </footer>
 
     <script>
-        // Basic routing simulation
-        document.querySelectorAll('a[href^="/"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = link.getAttribute('href');
-                console.log(`Navigating to ${href}`);
-                if (href === '/signup') {
-                    window.location.href = 'http://sweatshoping.shop/register.html';
-                } else if (href === '/login') {
-                    window.location.href = 'http://sweatshoping.shop/login';
+        // Firebase Authentication State Handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const authButtons = document.getElementById('auth-buttons');
+
+            // Check authentication state
+            window.auth.onAuthStateChanged(user => {
+                if (user) {
+                    // User is signed in, hide Login and Sign Up buttons
+                    authButtons.classList.add('hidden');
                 } else {
-                    window.location.href = href;
+                    // User is not signed in, show Login and Sign Up buttons
+                    authButtons.classList.remove('hidden');
                 }
+            });
+
+            // Basic routing simulation
+            document.querySelectorAll('a[href^="/"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    console.log(`Navigating to ${href}`);
+                    if (href === '/signup') {
+                        window.location.href = 'http://sweatshoping.shop/register.html';
+                    } else if (href === '/login') {
+                        window.location.href = 'http://sweatshoping.shop/login';
+                    } else {
+                        window.location.href = href;
+                    }
+                });
             });
         });
     </script>
 </body>
-
 </html>
-
-
-
