@@ -160,6 +160,24 @@
         .grid.gap-8 {
             gap: 2rem;
         }
+
+        /* Added styles for gap between Projects and Skills */
+        #portfolio {
+            margin-bottom: 6rem; /* Increased gap after Projects section */
+            position: relative;
+        }
+        #portfolio::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--golden-beige), transparent);
+            margin: 3rem auto 0;
+            opacity: 0.5;
+        }
+        #skills {
+            padding-top: 8rem; /* Adjusted padding to balance the gap */
+        }
     </style>
 </head>
 <body class="transition-colors duration-800">
@@ -951,4 +969,3 @@
     </script>
 </body>
 </html>
-
